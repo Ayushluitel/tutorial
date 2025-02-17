@@ -27,6 +27,12 @@
     border-radius: 5px;
 }
 
+.newsletter__message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: green;
+}
+
 
 .newsletter__input input {
     border: none;

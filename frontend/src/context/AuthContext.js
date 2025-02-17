@@ -1,10 +1,19 @@
 import {createContext, useEffect, useReducer} from 'react';
 
 const initial_state = {
-    user: localStorage.getItem('user')!== undefined ? JSON.parse(localStorage.getItem('user')):null,
+    user: (() => {
+        try {
+            const userData = localStorage.getItem('user');
+            return userData ? JSON.parse(userData) : null;
+        } catch (error) {
+            console.error("Error parsing user data from localStorage:", error);
+            return null; // Return null if JSON parsing fails
+        }
+    })(),
     loading: false,
     error: null
-}
+};
+
 
 export const AuthContext = createContext(initial_state)
 
