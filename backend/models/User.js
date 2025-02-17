@@ -23,7 +23,17 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
+      enum: ['user', 'admin'],
       default: "user",
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    isSubscribed: { 
+      type: Boolean, 
+      default: false 
     },
   },
   { timestamps: true }
