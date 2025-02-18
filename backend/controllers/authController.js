@@ -17,9 +17,11 @@ export const register = async (req, res) => {
 
         //  Generate verification token (valid for 1 hour)
         const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+        console.log("to", token)
 
         //  Send verification email with a button
         const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+        console.log("link", verificationLink)   
         const htmlContent = `
             <h2>Welcome to Path2Peaks!</h2>
             <p>Click the button below to verify your email:</p>
@@ -31,6 +33,7 @@ export const register = async (req, res) => {
         `;
 
         await sendEmail(email, "Verify Your Email", `Click here to verify: ${verificationLink}`, htmlContent);
+        console.log("sent")
 
         res.status(201).json({ message: "User registered. Check email for verification link!" });
     } catch (error) {
@@ -48,12 +51,16 @@ export const verifyEmail = async (req, res) => {
         const user = await User.findOne({ email: decoded.email });
         if (!user) return res.status(404).json({ message: "User not found" });
 
+        console.log("user", user)
         // Mark user as verified
         user.isVerified = true;
         await user.save();
 
+        console.log("hello")
+
         // Redirect to frontend login page after verification
         res.redirect(`${process.env.FRONTEND_URL}/login`);
+        console.log("world")
     } catch (error) {
         res.status(400).json({ message: "Invalid or expired token" });
     }
@@ -96,8 +103,7 @@ export const login = async (req, res) => {
             expires: token.expiresIn
         }).status(200).json({
             token,
-            data: { ...rest },
-            role,
+            data: { ...rest, role },  // Add role to the data object
         });
     } catch (error) {
         return res.status(500).json({ success: false, message: 'Failed to login' });

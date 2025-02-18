@@ -19,6 +19,7 @@ import Newsletter from '../shared/Newsletter';
 
 
 const Home = () => {
+    
     return (<>
         {/* =========================hero section start =================*/}
         <section>
