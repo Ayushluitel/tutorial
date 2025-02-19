@@ -188,3 +188,32 @@ export const resetPassword = async (req, res) => {
     res.status(400).json({ message: "Invalid or expired token" });
   }
 };
+
+// Create Admin User
+export const createAdminUser = async () => {
+  try {
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    const existingAdmin = await User.findOne({ email: adminEmail });
+    if (existingAdmin) {
+      console.log("Admin user already exists.");
+      return;
+    }
+
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
+    const newAdmin = new User({
+      username: "admin",
+      email: adminEmail,
+      password: hashedPassword,
+      role: "admin",
+      isVerified: true,
+    });
+
+    await newAdmin.save();
+    console.log("Admin user created successfully");
+  } catch (error) {
+    console.error("Error creating admin user:", error);
+  }
+};

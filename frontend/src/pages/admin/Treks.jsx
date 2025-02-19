@@ -17,7 +17,7 @@ const Treks = () => {
   useEffect(() => {
     const fetchTreks = async () => {
       try {
-        const response = await axios.get("/api/v1/admin/treks", {
+        const response = await axios.get("http://localhost:4000/api/v1/admin/treks", {
           withCredentials: true,
         });
         setTreks(response.data.data);
