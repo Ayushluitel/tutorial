@@ -7,11 +7,23 @@ import sendEmail from "../utils/emailService.js";
 export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ message: "Email already exists" });
 
+    // Check if email already exists
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+
+    // Check if username already exists
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
     const newUser = new User({
       username,
       email,
@@ -19,15 +31,16 @@ export const register = async (req, res) => {
       isVerified: false,
     });
 
+    // Save the user to the database
     await newUser.save();
 
-    //  Generate verification token (valid for 1 hour)
+    // Generate verification token (valid for 1 hour)
     const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
     console.log("to", token);
 
-    //  Send verification email with a button
+    // Send verification email with a button
     const verificationLink = `${process.env.BACKEND_URL}/api/v1/auth/verify-email?token=${token}`;
     console.log("link", verificationLink);
     const htmlContent = `

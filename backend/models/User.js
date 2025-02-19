@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      minlength: [3, "Username must be at least 3 characters long"],
+      maxlength: [15, "Username cannot be more than 15 characters"],
     },
     email: {
       type: String,
@@ -23,7 +25,7 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ['user','admin'],
+      enum: ["user", "admin"],
       default: "user",
     },
 
@@ -31,9 +33,9 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    isSubscribed: { 
-      type: Boolean, 
-      default: false 
+    isSubscribed: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
