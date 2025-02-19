@@ -29,6 +29,8 @@ const TourDetails = () => {
         address = "",
         city = "",
         altitude = 0,
+        time = 0,
+        difficulty = "",
         maxGroupSize = 0,
     } = tour || {};
 
@@ -123,6 +125,12 @@ const TourDetails = () => {
                                             </span>
                                             <span>
                                                 <i className="ri-map-pin-time-line"></i> {altitude} m
+                                            </span>
+                                            <span>
+                                                <i className="ri-map-pin-time-line"></i> {time} days
+                                            </span>
+                                            <span>
+                                                <i class="ri-dashboard-2-line"></i> {difficulty}
                                             </span>
                                             <span>
                                                 <i className="ri-group-line"></i> {maxGroupSize} people
