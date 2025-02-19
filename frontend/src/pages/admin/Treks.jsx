@@ -34,7 +34,7 @@ const Treks = () => {
   const handleAddTrek = async () => {
     try {
       const response = await axios.post(
-        "/api/v1/admin/treks",
+        "http://localhost:4000/api/v1/admin/treks",
         newTrek,
         {
           withCredentials: true,

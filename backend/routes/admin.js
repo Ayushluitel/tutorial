@@ -9,5 +9,6 @@ router.delete('/users/:id', verifyAdmin, deleteUser);
 router.get('/bookings', verifyAdmin, getAllBookings);
 router.put('/bookings/:id', verifyAdmin, updateBookingStatus);
 router.get('/dashboard', verifyAdmin, getDashboardStats);
+// router.get('/treks', verifyAdmin, create);
 
 export default router;

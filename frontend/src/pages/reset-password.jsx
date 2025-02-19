@@ -11,7 +11,8 @@ const ResetPassword = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-    const [token, setToken] = useState(new URLSearchParams(location.search).get('token'));
+    const [token] = useState(new URLSearchParams(location.search).get('token'));
+    console.log("kkkkkkk", token);
 
     const handlePasswordChange = (e) => {
         e.target.id === 'newPassword' ? setNewPassword(e.target.value) : setConfirmPassword(e.target.value);

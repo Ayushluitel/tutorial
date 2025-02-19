@@ -38,11 +38,10 @@ export const register = async (req, res) => {
     const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
-    console.log("to", token);
 
     // Send verification email with a button
     const verificationLink = `${process.env.BACKEND_URL}/api/v1/auth/verify-email?token=${token}`;
-    console.log("link", verificationLink);
+
     const htmlContent = `
             <h2>Welcome to Path2Peaks!</h2>
             <p>Click the button below to verify your email:</p>
@@ -59,8 +58,6 @@ export const register = async (req, res) => {
       `Click here to verify: ${verificationLink}`,
       htmlContent
     );
-    console.log("sent");
-
     res
       .status(201)
       .json({ message: "User registered. Check email for verification link!" });
@@ -174,6 +171,8 @@ export const forgotPassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
+    console.log("token", token);
+    console.log("newPassword", newPassword);
     if (!token) return res.status(400).json({ message: "Invalid token" });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
