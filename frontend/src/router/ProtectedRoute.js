@@ -1,31 +1,23 @@
-// // // import React, { useContext } from "react";
-// // // import { Navigate, Outlet } from "react-router-dom";
-// // // import { AuthContext } from "../context/AuthContext";
+import React, { useContext, useEffect, useState } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
-// // // const ProtectedRoute = ({ isAdmin }) => {
-// // //   const { user } = useContext(AuthContext);
+const ProtectedRoute = ({ isAdmin }) => {
+  const { user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
 
-// // //   // Check if user is logged in and has admin role
-// // //   if (!user) return <Navigate to="/login" />;
-// // //   if (isAdmin && user.role !== "admin") return <Navigate to="/home" />; // Redirect non-admin users
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500); // Simulate a short delay to check auth state
+  }, []);
 
-// // //   return <Outlet />;
-// // // };
+  if (loading) return <p>Loading...</p>;  // Show loading state while checking
 
-// // // export default ProtectedRoute;
+  if (!user) return <Navigate to="/login" />;
+  if (isAdmin && user.role !== "admin") return <Navigate to="/" />;
 
-// import React, { useContext } from "react";
-// import { Navigate, Outlet } from "react-router-dom";
-// import { AuthContext } from "../context/AuthContext";
+  return <Outlet />;
+};
 
-// const ProtectedRoute = ({ isAdmin }) => {
-//   // Get the current user from AuthContext
-//   const { user } = useContext(AuthContext);
-  
-//   const isUserAdmin = user && user.role === "admin"; // Check if the user is an admin
-
-//   // If the user is not an admin, redirect to login
-//   return isUserAdmin ? <Outlet /> : <Navigate to="/login" />;
-// };
-
-// export default ProtectedRoute;
+export default ProtectedRoute;

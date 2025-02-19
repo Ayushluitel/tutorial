@@ -50,6 +50,16 @@
 
 }
 
+.username__hover {
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .username__hover:hover {
+    color: var(--secondary-color) /* Change to your preferred hover color */
+  }
+  
+
 /*==================== make it responsive =================*/
 
 @media only screen and (max-width:992px) {

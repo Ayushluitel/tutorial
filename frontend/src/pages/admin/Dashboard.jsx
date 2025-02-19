@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/admin.css"; // Ensure the path is correct for your styles
 
+import { useNavigate } from "react-router-dom";
+
 const Dashboard = () => {
+  const navigate = useNavigate();
+
   // State to store dashboard statistics
   const [stats, setStats] = useState({ totalUsers: 0, totalTreks: 0, totalBookings: 0 });
   // State for loading and error handling
@@ -47,18 +51,25 @@ const Dashboard = () => {
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
       <div className="dashboard-stats">
-        <div className="stat-box">
+        
+        {/* Clickable Box - Navigate to Users Page */}
+        <div className="stat-box" onClick={() => navigate("/admin/users")} style={{ cursor: "pointer" }}>
           <h3>{stats.totalUsers}</h3>
           <p>Total Users</p>
         </div>
-        <div className="stat-box">
+
+        {/* Clickable Box - Navigate to Treks Page */}
+        <div className="stat-box" onClick={() => navigate("/admin/treks")} style={{ cursor: "pointer" }}>
           <h3>{stats.totalTreks}</h3>
           <p>Total Treks</p>
         </div>
-        <div className="stat-box">
+
+        {/* Clickable Box - Navigate to Bookings Page */}
+        <div className="stat-box" onClick={() => navigate("/admin/bookings")} style={{ cursor: "pointer" }}>
           <h3>{stats.totalBookings}</h3>
           <p>Total Bookings</p>
         </div>
+
       </div>
     </div>
   );

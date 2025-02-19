@@ -36,6 +36,7 @@ const Router = () => {
 
       {/* Admin Routes */}
       <Route path="/admin/dashboard" element={<Dashboard />} />
+      <Route path="/admin/" element={<Dashboard />} />
       <Route path="/admin/users" element={<Users />} />
       <Route path="/admin/treks" element={<Treks />} />
       <Route path="/admin/bookings" element={<Bookings />} />

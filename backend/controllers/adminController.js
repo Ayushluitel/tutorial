@@ -14,8 +14,10 @@ export const getAllUsers = async (req, res) => {
 
 // Delete user
 export const deleteUser = async (req, res) => {
+    console.log("kjkjkhjghfh");
     try {
-        await User.findByIdAndDelete(req.params.id);
+        console.log(req.params._id);
+        await User.findByIdAndDelete(req.params._id);
         res.status(200).json({ success: true, message: "User deleted successfully" });
     } catch (error) {
         res.status(500).json({ success: false, message: "Failed to delete user" });
@@ -24,8 +26,10 @@ export const deleteUser = async (req, res) => {
 
 // Get all bookings
 export const getAllBookings = async (req, res) => {
+    console.log("booking");
     try {
         const bookings = await Booking.find().populate('user').populate('tour');
+        console.log("bookings",bookings);
         res.status(200).json({ success: true, data: bookings });
     } catch (error) {
         res.status(500).json({ success: false, message: "Failed to fetch bookings" });
