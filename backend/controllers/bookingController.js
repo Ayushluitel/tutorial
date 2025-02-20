@@ -3,7 +3,7 @@ import Booking from "../models/Booking.js";
 //create new booking
 export const createBooking = async (req, res) => {
   try {
-    const { tourName, guestSize, phone, price } = req.body;
+    const { tourName, guestSize, phone, price, bookingDate } = req.body;
 
     const newBooking = new Booking({
       userId: req.user.id,
@@ -11,6 +11,7 @@ export const createBooking = async (req, res) => {
       guestSize,
       phone,
       price,
+      bookingDate,
       status: "pending",
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -68,22 +69,23 @@ export const getAllBookings = async (req, res) => {
 };
 
 export const getMyBookings = async (req, res) => {
-  console.log("hello")
   try {
-    const bookings = await Booking.find({ userId: req.user.id })
-    console.log("bookings", bookings)
+    const bookings = await Booking.find({ userId: req.user.id });
 
     res.status(200).json({
       success: true,
       message: "User bookings fetched successfully",
-      data: bookings.map(booking => ({
+      data: bookings.map((booking) => ({
         _id: booking._id,
-        tourName: booking.trekId?.title || 'Unknown Trek',
+        tourName: booking.tourName,
         guestSize: booking.guestSize,
         price: booking.price,
         phone: booking.phone,
+        bookingDate: booking.bookingDate
+          ? booking.bookingDate.toLocaleDateString()
+          : "N/A",
         status: booking.status,
-      }))
+      })),
     });
   } catch (err) {
     res.status(500).json({
