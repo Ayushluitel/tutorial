@@ -1,23 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import React from "react";
+import { Route, Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ isAdmin }) => {
-  const { user } = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 500); // Simulate a short delay to check auth state
-  }, []);
-
-  if (loading) return <p>Loading...</p>;  // Show loading state while checking
-
-  if (!user) return <Navigate to="/login" />;
-  if (isAdmin && user.role !== "admin") return <Navigate to="/" />;
-
-  return <Outlet />;
+const isAuthenticated = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log("usersssss", user)
+  return user !== null;
 };
 
-export default ProtectedRoute;
+const ProtectRoutes = ({ children }) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" />; // Redirect to login if not authenticated
+  }
+
+  return children;
+};
+
+export default ProtectRoutes;

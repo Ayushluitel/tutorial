@@ -5,11 +5,18 @@ import { Table, Button, Form, FormGroup, Label, Input } from "reactstrap";
 const Treks = () => {
   const [treks, setTreks] = useState([]);
   const [newTrek, setNewTrek] = useState({
-    name: "",
-    description: "",
-    location: "",
+    title: "",
+    desc: "",
+    address: "",
     price: "",
+    altitude: "",
+    photo: [],
+    time: "",
+    difficulty: "",
+    maxGroupSize: "",
+    featured: false,
   });
+
   const [editingTrek, setEditingTrek] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,9 +24,12 @@ const Treks = () => {
   useEffect(() => {
     const fetchTreks = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/v1/admin/treks", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/admin/treks",
+          {
+            withCredentials: true,
+          }
+        );
         setTreks(response.data.data);
       } catch (err) {
         setError("Failed to fetch treks");
@@ -33,23 +43,48 @@ const Treks = () => {
 
   const handleAddTrek = async () => {
     try {
+      const trekData = {
+        ...newTrek,
+        price: Number(newTrek.price),
+        altitude: Number(newTrek.altitude),
+        time: Number(newTrek.time),
+        maxGroupSize: Number(newTrek.maxGroupSize),
+        desc: newTrek.desc,
+        address: newTrek.address,
+        difficulty: newTrek.difficulty,
+      };
+
       const response = await axios.post(
         "http://localhost:4000/api/v1/admin/treks",
-        newTrek,
+        trekData,
         {
           withCredentials: true,
         }
       );
+
       setTreks([...treks, response.data.data]);
-      setNewTrek({ name: "", description: "", location: "", price: "" });
+      // Reset form data
+      setNewTrek({
+        title: "",
+        desc: "",
+        address: "",
+        price: "",
+        altitude: "",
+        photo: [],
+        time: "",
+        difficulty: "",
+        maxGroupSize: "",
+        featured: false,
+      });
     } catch (err) {
+      console.error(err);
       setError("Failed to add trek");
     }
   };
 
   const handleDeleteTrek = async (trekId) => {
     try {
-      await axios.delete(`/api/v1/admin/treks/${trekId}`, {
+      await axios.delete(`http://localhost:4000/api/v1/admin/treks/${trekId}`, {
         withCredentials: true,
       });
       setTreks(treks.filter((trek) => trek._id !== trekId));
@@ -66,7 +101,7 @@ const Treks = () => {
   const handleUpdateTrek = async () => {
     try {
       const response = await axios.put(
-        `/api/v1/admin/treks/${editingTrek._id}`,
+        `http://localhost:4000/api/v1/admin/treks/${editingTrek._id}`,
         newTrek,
         {
           withCredentials: true,
@@ -77,7 +112,7 @@ const Treks = () => {
       );
       setTreks(updatedTreks);
       setEditingTrek(null);
-      setNewTrek({ name: "", description: "", location: "", price: "" });
+      setNewTrek({ title: "", desc: "", address: "", price: "" });
     } catch (err) {
       setError("Failed to update trek");
     }
@@ -87,40 +122,41 @@ const Treks = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
+    <div className="container">
       <h1>Manage Treks</h1>
       <Form>
         <FormGroup>
-          <Label for="name">Name</Label>
+          <Label for="title">Name</Label>
           <Input
             type="text"
-            id="name"
-            value={newTrek.name}
-            onChange={(e) => setNewTrek({ ...newTrek, name: e.target.value })}
+            id="title"
+            value={newTrek.title}
+            onChange={(e) => setNewTrek({ ...newTrek, title: e.target.value })}
           />
         </FormGroup>
+
         <FormGroup>
-          <Label for="description">Description</Label>
+          <Label for="desc">Description</Label>
           <Input
             type="text"
-            id="description"
-            value={newTrek.description}
+            id="desc"
+            value={newTrek.desc}
+            onChange={(e) => setNewTrek({ ...newTrek, desc: e.target.value })}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <Label for="address">Location</Label>
+          <Input
+            type="text"
+            id="address"
+            value={newTrek.address}
             onChange={(e) =>
-              setNewTrek({ ...newTrek, description: e.target.value })
+              setNewTrek({ ...newTrek, address: e.target.value })
             }
           />
         </FormGroup>
-        <FormGroup>
-          <Label for="location">Location</Label>
-          <Input
-            type="text"
-            id="location"
-            value={newTrek.location}
-            onChange={(e) =>
-              setNewTrek({ ...newTrek, location: e.target.value })
-            }
-          />
-        </FormGroup>
+
         <FormGroup>
           <Label for="price">Price</Label>
           <Input
@@ -130,6 +166,73 @@ const Treks = () => {
             onChange={(e) => setNewTrek({ ...newTrek, price: e.target.value })}
           />
         </FormGroup>
+
+        <FormGroup>
+          <Label for="altitude">Altitude</Label>
+          <Input
+            type="number"
+            id="altitude"
+            value={newTrek.altitude}
+            onChange={(e) =>
+              setNewTrek({ ...newTrek, altitude: e.target.value })
+            }
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <Label for="time">Time</Label>
+          <Input
+            type="number"
+            id="time"
+            value={newTrek.time}
+            onChange={(e) => setNewTrek({ ...newTrek, time: e.target.value })}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <Label for="difficulty">Difficulty</Label>
+          <Input
+            type="select"
+            id="difficulty"
+            value={newTrek.difficulty}
+            onChange={(e) =>
+              setNewTrek({ ...newTrek, difficulty: e.target.value })
+            }
+          >
+            <option value="easy">Easy</option>
+            <option value="moderate">Moderate</option>
+            <option value="difficult">Difficult</option>
+            <option value="demanding">Demanding</option>
+          </Input>
+        </FormGroup>
+
+        <FormGroup>
+          <Label for="maxGroupSize">Max Group Size</Label>
+          <Input
+            type="number"
+            id="maxGroupSize"
+            value={newTrek.maxGroupSize}
+            onChange={(e) =>
+              setNewTrek({ ...newTrek, maxGroupSize: e.target.value })
+            }
+          />
+        </FormGroup>
+
+        <FormGroup check>
+          <Label check>
+            <Input
+              type="checkbox"
+              id="featured"
+              checked={newTrek.featured}
+              onChange={(e) =>
+                setNewTrek({ ...newTrek, featured: e.target.checked })
+              }
+            />
+            Featured
+          </Label>
+        </FormGroup>
+
+        {/* Submit Button */}
         <Button onClick={editingTrek ? handleUpdateTrek : handleAddTrek}>
           {editingTrek ? "Update Trek" : "Add Trek"}
         </Button>
@@ -138,20 +241,22 @@ const Treks = () => {
       <Table striped>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Title</th>
             <th>Description</th>
-            <th>Location</th>
+            <th>Address</th>
             <th>Price</th>
+            <th>Difficulty</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {treks.map((trek) => (
             <tr key={trek._id}>
-              <td>{trek.name}</td>
-              <td>{trek.description}</td>
-              <td>{trek.location}</td>
+              <td>{trek.title}</td>
+              <td>{trek.desc}</td>
+              <td>{trek.address}</td>
               <td>{trek.price}</td>
+              <td>{trek.difficulty}</td>
               <td>
                 <Button color="warning" onClick={() => handleEditTrek(trek)}>
                   Edit

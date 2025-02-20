@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export const verifyToken = (req, res, next) => {
-    const token = req.cookies.accessToken;
+    const token = req.cookies.accessToken || req.headers.authorization?.split(" ")[1];
 
     if (!token) {
         return res.status(401).json({ success: false, message: 'You are not authorized' });
@@ -25,7 +25,7 @@ export const verifyUser = (req, res, next) => {
             return res.status(403).json({ success: false, message: 'User not found' });
         }
 
-        if (req.user.id === req.params.id || req.user.role === 'admin') {
+        if (req.user.id === req.params.id || req.user.role === 'user') {
             next();
         } else {
             return res.status(403).json({ success: false, message: 'You are not authenticated' });

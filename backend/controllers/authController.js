@@ -196,7 +196,7 @@ export const createAdminUser = async () => {
 
     const existingAdmin = await User.findOne({ email: adminEmail });
     if (existingAdmin) {
-      console.log("Admin user already exists.");
+      // console.log("Admin user already exists.");
       return;
     }
 

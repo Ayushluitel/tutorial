@@ -10,9 +10,13 @@ const Bookings = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/v1/admin/bookings", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/admin/bookings",
+          {
+            withCredentials: true,
+          }
+        );
+        console.log("res", response.data.data);
         setBookings(response.data.data);
       } catch (err) {
         setError("Failed to fetch bookings");
@@ -27,7 +31,7 @@ const Bookings = () => {
   const handleUpdateBookingStatus = async (bookingId, status) => {
     try {
       await axios.put(
-        `/api/v1/admin/bookings/${bookingId}`,
+        `http://localhost:4000/api/v1/admin/bookings/${bookingId}`,
         { status },
         {
           withCredentials: true,
@@ -61,19 +65,23 @@ const Bookings = () => {
         <tbody>
           {bookings.map((booking) => (
             <tr key={booking._id}>
-              <td>{booking.user.name}</td>
-              <td>{booking.tour.name}</td>
+              <td>{booking.userId?.name}</td>
+              <td>{booking.tourName}</td>
               <td>{booking.status}</td>
               <td>
                 <Button
                   color="success"
-                  onClick={() => handleUpdateBookingStatus(booking._id, "approved")}
+                  onClick={() =>
+                    handleUpdateBookingStatus(booking._id, "approved")
+                  }
                 >
                   Approve
                 </Button>
                 <Button
                   color="danger"
-                  onClick={() => handleUpdateBookingStatus(booking._id, "rejected")}
+                  onClick={() =>
+                    handleUpdateBookingStatus(booking._id, "rejected")
+                  }
                 >
                   Reject
                 </Button>
