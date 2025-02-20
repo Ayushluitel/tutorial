@@ -6,8 +6,6 @@ import axios from "axios";
 const MyBookings = () => {
   const { user } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
-  console.log("booking", bookings)
-
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -16,14 +14,11 @@ const MyBookings = () => {
           "http://localhost:4000/api/v1/booking/my-bookings",
           { withCredentials: true }
         );
-
-        console.log("res", res);
         setBookings(res.data.data);
       } catch (err) {
         console.error("Error fetching bookings:", err);
       }
     };
-
     if (user) fetchBookings();
   }, [user]);
 
@@ -36,7 +31,7 @@ const MyBookings = () => {
         <Table bordered striped responsive>
           <thead>
             <tr>
-              <th>#</th>
+              <th>S.No</th>
               <th>Trek Name</th>
               <th>Date</th>
               <th>Price</th>
@@ -48,7 +43,7 @@ const MyBookings = () => {
               <tr key={booking._id}>
                 <td>{index + 1}</td>
                 <td>{booking.tourName || "N/A"}</td>
-                <td>{new Date(booking.createdAt).toLocaleDateString()}</td>
+                <td>{booking.bookingDate || "N/A"}</td>
                 <td>${booking.price || "N/A"}</td>
                 <td>
                   <span
