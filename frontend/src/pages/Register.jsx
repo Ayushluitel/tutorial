@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 
 const Register = () => {
   const [credentials, setCredentials] = useState({
+    name: undefined,
     username: undefined,
     email: undefined,
     password: undefined,
@@ -67,6 +68,15 @@ const Register = () => {
                 </div>
                 <h2>Register</h2>
                 <Form onSubmit={handleClick}>
+                <FormGroup>
+                    <input
+                      type="text"
+                      placeholder="Full Name"
+                      required
+                      id="name"
+                      onChange={handleChange}
+                    />
+                  </FormGroup>
                   <FormGroup>
                     <input
                       type="text"

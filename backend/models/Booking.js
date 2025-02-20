@@ -6,15 +6,9 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       ref: 'User',
     },
-    userEmail: {
-      type: String,
-    },
     tourName: {
       type: String,
       required: true,
-    },
-    fullName: {
-      type: String,
     },
     guestSize: {
       type: Number,
@@ -24,13 +18,12 @@ const bookingSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    price: {
+      type: Number,
+    },
     status: {
       type: String,
       default: "pending",
-    },
-    bookAt: {
-      type: Date,
-      // required: true,
     },
   },
   { timestamps: true }
