@@ -10,9 +10,12 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/v1/admin/users", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/admin/users",
+          {
+            withCredentials: true,
+          }
+        );
         setUsers(response.data.data);
       } catch (err) {
         setError("Failed to fetch users");
@@ -26,7 +29,7 @@ const Users = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`/api/v1/admin/users/${userId}`, {
+      await axios.delete(`http://localhost:4000/api/v1/admin/users/${userId}`, {
         withCredentials: true,
       });
       // Remove the user from the local state list after deletion
@@ -54,7 +57,7 @@ const Users = () => {
         <tbody>
           {users.map((user) => (
             <tr key={user._id}>
-              <td>{user.username}</td>
+              <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>

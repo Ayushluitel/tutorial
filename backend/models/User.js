@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: true,
+      minlength: [3, "Name must be at least 3 characters long"],
+      maxlength: [30, "Name cannot be more than 30 characters"],
+    },
     username: {
       type: String,
       required: true,

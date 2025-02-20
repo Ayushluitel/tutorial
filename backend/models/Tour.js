@@ -7,10 +7,6 @@ const tourSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    city: {
-      type: String,
-      required: true,
-    },
     address: {
       type: String,
       required: true,
@@ -20,27 +16,27 @@ const tourSchema = new mongoose.Schema(
       required: true,
     },
     photo: {
-      type: [String], // Changed to an array to store multiple images
-      required: true,
+      type: [String],
     },
     desc: {
       type: String,
       required: true,
-      minlength: 20, // Ensures a meaningful description
+      minlength: 10,
+      maxlength: 100,
     },
     price: {
       type: Number,
       required: true,
-      default: 0, //  Prevents NaN issues
+      default: 0,
     },
     time: {
-      type: Number, // Changed from String to Number (assuming it represents duration in days)
+      type: Number,
       required: true,
     },
     difficulty: {
       type: String,
       enum: ["easy", "moderate", "difficult", "demanding"],
-      required: true, //  Ensure difficulty level is always provided
+      required: true,
     },
     maxGroupSize: {
       type: Number,
@@ -50,7 +46,7 @@ const tourSchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "Review",
-        default: [], // Prevents errors if no reviews exist
+        default: [],
       },
     ],
     featured: {
@@ -58,7 +54,7 @@ const tourSchema = new mongoose.Schema(
       default: false,
     },
     createdBy: {
-      type: mongoose.Types.ObjectId, // Track which admin added this tour
+      type: mongoose.Types.ObjectId,
       ref: "User",
     },
   },
