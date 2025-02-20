@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import path from "path";
+import { fileURLToPath } from "url";
 import reviewRoute from "./routes/reviews.js";
 import tourRoute from "./routes/tours.js";
 import userRoute from "./routes/users.js";
@@ -32,10 +33,19 @@ const connect = async () => {
   }
 };
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Middleware
-app.use(express.json());
 app.use(cors(corOptions));
 app.use(cookieParser());
+app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// API check route
+app.get("/api/v1", (req, res) => {
+  res.status(200).send("API is working perfectly fine!");
+});
 
 app.use("/api/v1/tours", tourRoute);
 app.use("/api/v1/users", userRoute);
