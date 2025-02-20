@@ -1,26 +1,26 @@
-import React, { useRef, useEffect, useContext } from 'react';
-import { Container, Row, Button } from 'reactstrap';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import React, { useRef, useEffect, useContext } from "react";
+import { Container, Row, Button } from "reactstrap";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 
-import logo from '../../assets/images/logo.png';
-import './header.css';
+import logo from "../../assets/images/logo.png";
+import "./header.css";
 
-import { AuthContext } from './../../context/AuthContext.js';
+import { AuthContext } from "./../../context/AuthContext.js";
 
 import "remixicon/fonts/remixicon.css";
 
 const nav__links = [
   {
-    path: '/home',
-    display: 'Home'
+    path: "/home",
+    display: "Home",
   },
   {
-    path: '/about',
-    display: 'About'
+    path: "/about",
+    display: "About",
   },
   {
-    path: '/tours',
-    display: 'Treks'
+    path: "/tours",
+    display: "Treks",
   },
 ];
 
@@ -31,16 +31,19 @@ const Header = () => {
   const { user, dispatch } = useContext(AuthContext);
 
   const logout = () => {
-    dispatch({ type: 'LOGOUT' });
-    navigate('/');
+    dispatch({ type: "LOGOUT" });
+    navigate("/");
   };
 
   const stickyHeaderFunc = () => {
-    window.addEventListener('scroll', () => {
-      if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-        headerRef.current.classList.add('sticky__header');
+    window.addEventListener("scroll", () => {
+      if (
+        document.body.scrollTop > 80 ||
+        document.documentElement.scrollTop > 80
+      ) {
+        headerRef.current.classList.add("sticky__header");
       } else {
-        headerRef.current.classList.remove('sticky__header');
+        headerRef.current.classList.remove("sticky__header");
       }
     });
   };
@@ -50,7 +53,7 @@ const Header = () => {
     return () => window.removeEventListener("scroll", stickyHeaderFunc);
   }, []);
 
-  const toggleMenu = () => menuRef.current.classList.toggle('show__menu');
+  const toggleMenu = () => menuRef.current.classList.toggle("show__menu");
 
   return (
     <header className="header" ref={headerRef}>
@@ -67,11 +70,30 @@ const Header = () => {
               <ul className="menu d-flex align-items-center gap-5">
                 {nav__links.map((item, index) => (
                   <li className="nav__item" key={index}>
-                    <NavLink to={item.path} className={(navClass) => (navClass.isActive ? "active__link" : "")}>
+                    <NavLink
+                      to={item.path}
+                      className={(navClass) =>
+                        navClass.isActive ? "active__link" : ""
+                      }
+                    >
                       {item.display}
                     </NavLink>
                   </li>
                 ))}
+
+                {/* Conditionally show "My Bookings" if user is logged in and not an admin */}
+                {user && user.role === "user" && (
+                  <li className="nav__item">
+                    <NavLink
+                      to="/my-bookings"
+                      className={(navClass) =>
+                        navClass.isActive ? "active__link" : ""
+                      }
+                    >
+                      My Bookings
+                    </NavLink>
+                  </li>
+                )}
               </ul>
             </div>
 
@@ -82,17 +104,25 @@ const Header = () => {
                   <>
                     {user.role === "admin" ? (
                       <Link to="/admin/dashboard" className="admin-link">
-                        <h5 className="mb-0 username__hover">{user.username}</h5>
+                        <h5 className="mb-0 username__hover">
+                          {user.username}
+                        </h5>
                       </Link>
                     ) : (
                       <h5 className="mb-0">{user.username}</h5>
                     )}
-                    <Button className="btn btn-dark" onClick={logout}>Logout</Button>
+                    <Button className="btn btn-dark" onClick={logout}>
+                      Logout
+                    </Button>
                   </>
                 ) : (
                   <>
-                    <Button className="btn secondary__btn"><Link to="/login">Login</Link></Button>
-                    <Button className="btn primary__btn"><Link to="/register">Register</Link></Button>
+                    <Button className="btn secondary__btn">
+                      <Link to="/login">Login</Link>
+                    </Button>
+                    <Button className="btn primary__btn">
+                      <Link to="/register">Register</Link>
+                    </Button>
                   </>
                 )}
               </div>

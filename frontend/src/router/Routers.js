@@ -18,6 +18,7 @@ import Bookings from "../pages/admin/Bookings";
 
 import ProtectRoutes from "./ProtectedRoute";
 import AdminRoutes from "./AdminRoutes";
+import MyBookings from "../pages/MyBookings";
 
 const Router = () => {
   return (
@@ -31,13 +32,17 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/thank-you" element={<ThankYou />} />
       <Route path="/tours/search" element={<SearchResultList />} />
+      <Route path = "/my-bookings" element={<MyBookings/>}/>
+      
 
       {/* Forgot and Reset Password Routes */}
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
       {/* Protected Routes */}
-      <Route element={<ProtectRoutes />}></Route>
+      <Route element={<ProtectRoutes />}>
+      
+      </Route>
 
       {/* Admin Routes */}
       <Route>

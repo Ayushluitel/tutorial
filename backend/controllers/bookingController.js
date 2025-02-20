@@ -3,17 +3,17 @@ import Booking from "../models/Booking.js";
 //create new booking
 export const createBooking = async (req, res) => {
   try {
-    const { tourName, guestSize, phone } = req.body;
+    const { tourName, guestSize, phone, price } = req.body;
 
     const newBooking = new Booking({
       userId: req.user.id,
-      userEmail: req.user.email,
-      fullName: req.user.name,
       tourName,
       guestSize,
       phone,
+      price,
       status: "pending",
-      bookAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     const savedBooking = await newBooking.save();
@@ -58,6 +58,32 @@ export const getAllBookings = async (req, res) => {
       success: true,
       message: "bookings fetched successfully",
       data: bookings,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export const getMyBookings = async (req, res) => {
+  console.log("hello")
+  try {
+    const bookings = await Booking.find({ userId: req.user.id })
+    console.log("bookings", bookings)
+
+    res.status(200).json({
+      success: true,
+      message: "User bookings fetched successfully",
+      data: bookings.map(booking => ({
+        _id: booking._id,
+        tourName: booking.trekId?.title || 'Unknown Trek',
+        guestSize: booking.guestSize,
+        price: booking.price,
+        phone: booking.phone,
+        status: booking.status,
+      }))
     });
   } catch (err) {
     res.status(500).json({
