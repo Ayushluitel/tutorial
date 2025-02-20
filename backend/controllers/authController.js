@@ -6,7 +6,7 @@ import sendEmail from "../utils/emailService.js";
 // User Registration (Send Verification Email)
 export const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { name, username, email, password } = req.body;
 
     // Check if email already exists
     const existingEmail = await User.findOne({ email });
@@ -25,6 +25,7 @@ export const register = async (req, res) => {
 
     // Create a new user
     const newUser = new User({
+      name,
       username,
       email,
       password: hashedPassword,
