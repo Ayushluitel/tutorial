@@ -1,71 +1,108 @@
-import React, { useRef } from 'react'
-import './search-bar.css'
-import { Col, Form, FormGroup } from "reactstrap";
-
-import { BASE_URL } from './../utils/config.js';
-
-import { useNavigate } from 'react-router-dom';
-
-
+import React, { useRef, useState } from "react";
+import "./search-bar.css";
+import { Col, Form, FormGroup, Spinner } from "reactstrap";
+import { BASE_URL } from "./../utils/config.js";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
+  const locationRef = useRef("");
+  const altitudeRef = useRef("");
+  const maxGroupSizeRef = useRef("");
+  const navigate = useNavigate();
 
-    const locationRef = useRef('');
-    const altitudeRef = useRef(0);
-    const maxGroupSizeRef = useRef(0);
-    const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-    const searchHandler = async() => {
-        const location = locationRef.current.value;
-        const altitude = altitudeRef.current.value;
-        const maxGroupSize = maxGroupSizeRef.current.value;
+  const searchHandler = async () => {
+    setLoading(true);
+    setError("");
 
-        if (location === '' || altitude === '' || maxGroupSize === '') {
-            return alert('All fields are required');
-        }
+    const location = locationRef.current.value.trim();
+    const altitude = altitudeRef.current.value.trim();
+    const maxGroupSize = maxGroupSizeRef.current.value.trim();
 
-        const res = await fetch(`${BASE_URL}/tours/search/getTourBySearch?city=${location}&altitude=${altitude}&maxGroupSize=${maxGroupSize}`)
+    // Construct query parameters dynamically
+    const params = new URLSearchParams();
+    if (location) params.append("address", location);
+    if (altitude) params.append("altitude", altitude);
+    if (maxGroupSize) params.append("maxGroupSize", maxGroupSize);
 
-        if(!res.ok) alert('Something went wrong')
-        
-        const result = await res.json();
+    try {
+      const res = await fetch(
+        `${BASE_URL}/tours/search/getTourBySearch?${params.toString()}`
+      );
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Something went wrong");
+      }
+      const result = await res.json();
 
-        navigate(`/tours/search?city=${location}&altitude=${altitude}&maxGroupSize=${maxGroupSize}`,
-            {state: result.data }
-        );
-    };
+      navigate(`/tours/search?${params.toString()}`, {
+        state: result.data,
+      });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return <Col lg='12'>
-        <div className="search__bar">
-            <Form className="d-flex align-items-center gap-4">
-                <FormGroup className="d-flex gap-3 form__group form__group-fast">
-                    <span><i className="ri-map-pin-line"></i></span>
-                    <div>
-                        <h6>Location</h6>
-                        <input type="text" placeholder='Where are you going ?' ref={locationRef} />
-                    </div>
-                </FormGroup>
-                <FormGroup className="d-flex gap-3 form__group form__group-fast">
-                    <span><i className="ri-map-pin-time-line"></i></span>
-                    <div>
-                        <h6>Altitude</h6>
-                        <input type="number" placeholder='Altitude in meter' ref={altitudeRef} />
-                    </div>
-                </FormGroup>
-                <FormGroup className="d-flex gap-3 form__group form__group-last">
-                    <span><i className="ri-group-line"></i></span>
-                    <div>
-                        <h6>Max people</h6>
-                        <input type="number" placeholder='0' ref={maxGroupSizeRef} />
-                    </div>
-                </FormGroup>
+  return (
+    <Col lg="12">
+      <div className="search__bar">
+        <Form className="d-flex align-items-center gap-4">
+          <FormGroup className="d-flex gap-3 form__group form__group-fast">
+            <span>
+              <i className="ri-map-pin-line"></i>
+            </span>
+            <div>
+              <h6>Location</h6>
+              <input
+                type="text"
+                placeholder="Where are you going?"
+                ref={locationRef}
+              />
+            </div>
+          </FormGroup>
+          <FormGroup className="d-flex gap-3 form__group form__group-fast">
+            <span>
+              <i className="ri-map-pin-time-line"></i>
+            </span>
+            <div>
+              <h6>Altitude</h6>
+              <input
+                type="number"
+                placeholder="Minimum Altitude"
+                ref={altitudeRef}
+              />
+            </div>
+          </FormGroup>
+          <FormGroup className="d-flex gap-3 form__group form__group-last">
+            <span>
+              <i className="ri-group-line"></i>
+            </span>
+            <div>
+              <h6>Max People</h6>
+              <input
+                type="number"
+                placeholder="Maximum Group Size"
+                ref={maxGroupSizeRef}
+              />
+            </div>
+          </FormGroup>
 
-                <span className="search__icon" type="submit" onClick={searchHandler}>
-                    <i className="ri-search-line"></i>
-                </span>
-            </Form>
-        </div>
+          <span className="search__icon" onClick={searchHandler}>
+            {loading ? (
+              <Spinner size="sm" color="light" />
+            ) : (
+              <i className="ri-search-line"></i>
+            )}
+          </span>
+        </Form>
+        {error && <p className="text-danger mt-2">{error}</p>}
+      </div>
     </Col>
+  );
 };
 
-export default SearchBar
+export default SearchBar;

@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import Booking from "../models/Booking.js";
 import Tour from "../models/Tour.js";
+import path from "path";
 
 // Get all users
 export const getAllUsers = async (req, res) => {
@@ -88,23 +89,33 @@ export const getDashboardStats = async (req, res) => {
 
 export const createTrek = async (req, res) => {
   try {
-    console.log(req.user);
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No photos uploaded",
+      });
+    }
+
+    const photoPaths = req.files.map(
+      (file) => `/uploads/tours/${path.basename(file.path)}`
+    );
+
     const newTour = new Tour({
       ...req.body,
-      createdBy: req.user.id,
+      photo: photoPaths,
     });
 
     const savedTour = await newTour.save();
-    res.status(200).json({
+    res.status(201).json({
       success: true,
-      message: "Successfully created",
       data: savedTour,
     });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error("Error in createTrek:", err);
     res.status(500).json({
       success: false,
-      message: "Failed to create. Please try again.",
+      message: "Server Error",
+      error: err.message,
     });
   }
 };
