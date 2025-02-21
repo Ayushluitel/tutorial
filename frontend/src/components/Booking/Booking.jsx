@@ -14,12 +14,11 @@ const Booking = ({ tour, avgRating }) => {
 
   const [booking, setBooking] = useState({
     userId: user && user._id,
-    userEmail: user && user.email,
     tourName: title,
-    fullName: "",
-    phone: "",
     guestSize: 1,
-    bookAt: "",
+    phone: "",
+    price: 0,
+    bookingDate: "",
   });
 
   const handleChange = (e) => {
@@ -104,7 +103,7 @@ const Booking = ({ tour, avgRating }) => {
             <input
               type="date"
               placeholder=""
-              id="bookAt"
+              id="bookingDate"
               required
               onChange={handleChange}
             />

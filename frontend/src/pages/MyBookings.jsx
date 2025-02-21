@@ -14,6 +14,8 @@ const MyBookings = () => {
           "http://localhost:4000/api/v1/booking/my-bookings",
           { withCredentials: true }
         );
+        console.log("res", res.data); // Check the structure and values of the response
+
         setBookings(res.data.data);
       } catch (err) {
         console.error("Error fetching bookings:", err);
@@ -21,6 +23,14 @@ const MyBookings = () => {
     };
     if (user) fetchBookings();
   }, [user]);
+
+  // Function to format the date to a readable string
+  const formatDate = (date) => {
+    const parsedDate = new Date(date);
+    return parsedDate instanceof Date && !isNaN(parsedDate)
+      ? parsedDate.toLocaleDateString()
+      : "N/A"; // If the date is invalid, return "N/A"
+  };
 
   return (
     <Container className="mt-5">
@@ -43,7 +53,8 @@ const MyBookings = () => {
               <tr key={booking._id}>
                 <td>{index + 1}</td>
                 <td>{booking.tourName || "N/A"}</td>
-                <td>{booking.bookingDate || "N/A"}</td>
+                <td>{formatDate(booking.bookingDate)}</td>{" "}
+                {/* Format date here */}
                 <td>${booking.price || "N/A"}</td>
                 <td>
                   <span

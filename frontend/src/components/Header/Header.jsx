@@ -62,7 +62,9 @@ const Header = () => {
           <div className="nav_wrapper d-flex align-items-center justify-content-between">
             {/* Logo */}
             <div className="logo">
-              <img src={logo} alt="Logo" />
+              <NavLink to="/">
+                <img src={logo} alt="Logo" />
+              </NavLink>
             </div>
 
             {/* Navigation Menu */}
