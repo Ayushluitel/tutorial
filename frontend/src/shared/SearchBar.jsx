@@ -1,71 +1,108 @@
-import React, { useRef } from 'react'
-import './search-bar.css'
+//SEARCHbAR.JSX
+import React, { useState, useRef } from "react";
+import "./search-bar.css";
 import { Col, Form, FormGroup } from "reactstrap";
+import { BASE_URL } from "./../utils/config.js";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-import { BASE_URL } from './../utils/config.js';
+const SearchBar = ({ setRecommendations }) => {
+  // Debug log to check if setRecommendations is being passed correctly
+  console.log("setRecommendations in SearchBar:", setRecommendations);
 
-import { useNavigate } from 'react-router-dom';
+  const [budget, setBudget] = useState(500);
+  const [time, setTime] = useState(5);
+  const [difficulty, setDifficulty] = useState("moderate");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
 
+  const handleRecommend = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(`${BASE_URL}/recommendations`, {
+        budget,
+        time,
+        difficulty,
+      });
 
-const SearchBar = () => {
+      // Ensure setRecommendations is a function before calling it
+      if (typeof setRecommendations === "function") {
+        setRecommendations(response.data);
+      } else {
+        console.error("setRecommendations is not a function");
+      }
 
-    const locationRef = useRef('');
-    const altitudeRef = useRef(0);
-    const maxGroupSizeRef = useRef(0);
-    const navigate = useNavigate();
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching recommendations:", error);
+      setIsLoading(false);
+    }
+  };
 
-    const searchHandler = async() => {
-        const location = locationRef.current.value;
-        const altitude = altitudeRef.current.value;
-        const maxGroupSize = maxGroupSizeRef.current.value;
+  return (
+    <Col lg="12">
+      <div className="recommend_bar">
+      <Form className="d-flex align-items-center gap-4">
+        <FormGroup className="d-flex gap-3 form__group form__group-fast recommend_form">
+          <span>
+            <i className="ri-wallet-line"></i>
+          </span>
+          <div>
+            <h6>Budget</h6>
+            <input
+              type="number"
+              value={budget}
+              onChange={(e) => setBudget(parseFloat(e.target.value))}
+              placeholder="Enter your budget"
+            />
+          </div>
+        </FormGroup>
+        <FormGroup className="d-flex gap-3 form__group form__group-fast recommend_form">
+          <span>
+            <i className="ri-time-line"></i>
+          </span>
+          <div>
+            <h6>Time</h6>
+            <input
+              type="number"
+              value={time}
+              onChange={(e) => setTime(parseFloat(e.target.value))}
+              placeholder="Enter duration (days)"
+            />
+          </div>
+        </FormGroup>
+        <FormGroup className="d-flex gap-3 form__group form__group-last recommend_form">
+          <span>
+          <i class="ri-dashboard-2-line"></i>
+          </span>
+          <div>
+            <h6>Difficulty</h6>
+            <select
+              value={difficulty}
+              onChange={(e) => setDifficulty(e.target.value)}
+            >
+              <option value="easy">Easy</option>
+              <option value="moderate">Moderate</option>
+              <option value="difficult">Difficult</option>
+              <option value="demanding">Demanding</option>
+            </select>
+          </div>
+        </FormGroup>
 
-        if (location === '' || altitude === '' || maxGroupSize === '') {
-            return alert('All fields are required');
-        }
-
-        const res = await fetch(`${BASE_URL}/tours/search/getTourBySearch?city=${location}&altitude=${altitude}&maxGroupSize=${maxGroupSize}`)
-
-        if(!res.ok) alert('Something went wrong')
-        
-        const result = await res.json();
-
-        navigate(`/tours/search?city=${location}&altitude=${altitude}&maxGroupSize=${maxGroupSize}`,
-            {state: result.data }
-        );
-    };
-
-    return <Col lg='12'>
-        <div className="search__bar">
-            <Form className="d-flex align-items-center gap-4">
-                <FormGroup className="d-flex gap-3 form__group form__group-fast">
-                    <span><i className="ri-map-pin-line"></i></span>
-                    <div>
-                        <h6>Location</h6>
-                        <input type="text" placeholder='Where are you going ?' ref={locationRef} />
-                    </div>
-                </FormGroup>
-                <FormGroup className="d-flex gap-3 form__group form__group-fast">
-                    <span><i className="ri-map-pin-time-line"></i></span>
-                    <div>
-                        <h6>Altitude</h6>
-                        <input type="number" placeholder='Altitude in meter' ref={altitudeRef} />
-                    </div>
-                </FormGroup>
-                <FormGroup className="d-flex gap-3 form__group form__group-last">
-                    <span><i className="ri-group-line"></i></span>
-                    <div>
-                        <h6>Max people</h6>
-                        <input type="number" placeholder='0' ref={maxGroupSizeRef} />
-                    </div>
-                </FormGroup>
-
-                <span className="search__icon" type="submit" onClick={searchHandler}>
-                    <i className="ri-search-line"></i>
-                </span>
-            </Form>
-        </div>
+        <button
+          type="button"
+          className="recommend__button"
+          onClick={handleRecommend}
+          disabled={isLoading}
+        >
+          {isLoading ? "Loading..." : "Get Recommendations"}
+        </button>
+        </Form>
+      </div>
     </Col>
+  );
 };
 
-export default SearchBar
+export default SearchBar;

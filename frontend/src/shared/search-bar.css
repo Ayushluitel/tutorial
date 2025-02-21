@@ -1,4 +1,4 @@
-.search__bar {
+.recommend_bar {
     padding: 0.5rem 1rem;
     border-radius: 50px;
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
@@ -33,7 +33,7 @@
 
 }
 
-.search__icon i {
+.recommend__icon i {
     font-size: 1.6rem;
     padding: 0.5rem;
     background: var(--secondary-color);
@@ -42,6 +42,34 @@
     cursor: pointer;
 }
 
+/* Recommendation Bar */
+.recommend_bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.recommend_form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.recommend__button {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.recommend__button:hover {
+    background: var(--secondary-color);
+}
 
 @media only screen and (max-width:992px){
     .search__bar{

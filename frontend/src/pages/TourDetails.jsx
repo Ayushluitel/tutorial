@@ -11,6 +11,7 @@ import { BASE_URL } from "./../utils/config.js";
 import { AuthContext } from "./../context/AuthContext.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import WeatherDashboard from "../components/Weather/WeatherDashboard";
 
 const TourDetails = () => {
   const { id } = useParams();
@@ -153,6 +154,10 @@ const TourDetails = () => {
                     <h5>Description</h5>
                     <p>{desc}</p>
                   </div>
+                  <Col lg="4">
+                    <WeatherDashboard city={city} />
+                  </Col>
+
                   {/* Tour Reviews Section */}
                   <div className="tour_reviews mt-4">
                     <h4>Reviews ({reviews?.length} reviews)</h4>

@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./weather.css"; // Create a CSS file for styling
 import { API_KEY } from "../../utils/config"; // Store your API key safely
 
+
 const WeatherDashboard = ({ city }) => {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log("weather", weather);
+  console.log("city", city);
 
   useEffect(() => {
     if (!city) return;
