@@ -35,6 +35,7 @@
     font-size: 1.3rem;
     color: var(--heading-color);
     cursor: pointer;
+    display:none;
 }
 
 .sticky__header {

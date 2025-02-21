@@ -1,0 +1,20 @@
+
+.weather-widget {
+  background: #f4f4f4;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 200px; /* Prevents shrinking */
+  flex: 1; /* Allows it to grow */
+}
+  
+  .weather-widget h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .weather-widget span {
+    margin: 5px 0;
+    font-size: 1rem;
+  }
+  
