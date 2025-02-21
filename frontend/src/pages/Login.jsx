@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Container, Row, Col, Form, FormGroup, Button } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/login.css";
@@ -18,7 +18,7 @@ const Login = () => {
     password: undefined,
   });
 
-  const [error, setError] = useState(null); // State to hold error message
+  const [error, setError] = useState(null); 
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -42,17 +42,33 @@ const Login = () => {
 
       const result = await res.json();
       if (!res.ok) {
-        toast.error("Invalid Credentials"); // Show error toast
+        toast.error("Invalid Credentials");
       } else {
-        toast.success("Login Successful!"); // Show success toast
+        toast.success("Login Successful!");
+        // Save the token to localStorage (or to cookies, if needed)
+        localStorage.setItem("token", result.token);
         dispatch({ type: "LOGIN_SUCCESS", payload: result.data });
-        setTimeout(() => navigate("/"), 2000); // Redirect after 2 sec
+        setTimeout(() => navigate("/"), 2000);
       }
     } catch (err) {
-      toast.error("An error occurred. Please try again."); // Handle unexpected errors
+      toast.error("An error occurred. Please try again.");
       dispatch({ type: "LOGIN_FAILURE", payload: err.message });
     }
   };
+
+  // Check token expiry when the component mounts
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded = JSON.parse(atob(token.split('.')[1])); // Decode JWT
+      const expiryTime = decoded.exp * 1000; // Convert to milliseconds
+      if (expiryTime < Date.now()) {
+        localStorage.removeItem("token"); // Clear the expired token
+        dispatch({ type: "LOGOUT" }); // Dispatch logout action if you use context
+        navigate("/login"); // Redirect to login page
+      }
+    }
+  }, [dispatch, navigate]);
 
   return (
     <section>
@@ -94,29 +110,19 @@ const Login = () => {
                     Login
                   </Button>
                 </Form>
-                {error && <p className="error-text">{error}</p>}{" "}
-                {/* Display error message */}
+                {error && <p className="error-text">{error}</p>}
                 <p>
                   Don't have an account? <Link to="/register">Create</Link>
                 </p>
                 <p>
                   <Link to="/forgot-password">Forgot Password?</Link>
-                </p>{" "}
-                {/* Forgot Password Link */}
+                </p>
               </div>
             </div>
           </Col>
         </Row>
       </Container>
-      {/* Toast Notification Container */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        // pauseOnHover
-        theme="light"
-      />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick theme="light" />
     </section>
   );
 };
