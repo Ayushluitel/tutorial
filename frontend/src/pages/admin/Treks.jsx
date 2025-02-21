@@ -43,27 +43,35 @@ const Treks = () => {
 
   const handleAddTrek = async () => {
     try {
-      const trekData = {
-        ...newTrek,
-        price: Number(newTrek.price),
-        altitude: Number(newTrek.altitude),
-        time: Number(newTrek.time),
-        maxGroupSize: Number(newTrek.maxGroupSize),
-        desc: newTrek.desc,
-        address: newTrek.address,
-        difficulty: newTrek.difficulty,
-      };
+      const formData = new FormData();
+      formData.append("title", newTrek.title);
+      formData.append("desc", newTrek.desc);
+      formData.append("address", newTrek.address);
+      formData.append("price", newTrek.price);
+      formData.append("altitude", newTrek.altitude);
+      formData.append("time", newTrek.time);
+      formData.append("difficulty", newTrek.difficulty);
+      formData.append("maxGroupSize", newTrek.maxGroupSize);
+      formData.append("featured", newTrek.featured);
+
+      for (let i = 0; i < newTrek.photo.length; i++) {
+        formData.append("photo", newTrek.photo[i]);
+      }
 
       const response = await axios.post(
         "http://localhost:4000/api/v1/admin/treks",
-        trekData,
+        formData,
         {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
           withCredentials: true,
         }
       );
 
-      setTreks([...treks, response.data.data]);
-      // Reset form data
+      console.log("Tour created successfully:", response.data);
+
+      // Clear form fields
       setNewTrek({
         title: "",
         desc: "",
@@ -76,9 +84,11 @@ const Treks = () => {
         maxGroupSize: "",
         featured: false,
       });
+
+      // Update the treks list
+      setTreks([response.data.data, ...treks]);
     } catch (err) {
-      console.error(err);
-      setError("Failed to add trek");
+      console.error("Error adding trek:", err);
     }
   };
 
@@ -215,6 +225,22 @@ const Treks = () => {
             onChange={(e) =>
               setNewTrek({ ...newTrek, maxGroupSize: e.target.value })
             }
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <Label for="photo">Photos</Label>
+          <input
+            type="file"
+            name="photo"
+            accept="image/*"
+            multiple
+            onChange={(e) => {
+              setNewTrek({
+                ...newTrek,
+                photo: Array.from(e.target.files),
+              });
+            }}
           />
         </FormGroup>
 

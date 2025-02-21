@@ -88,6 +88,27 @@
     color: #fff;
 }
 
+.rating_group span {
+    color: lightgray;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+  }
+  
+  .rating_group span.selected-rating {
+    color: #ffc107;
+  }
+  
+  .rating_group span:hover,
+  .rating_group span:hover ~ span {
+    color: lightgray;
+  }
+  
+  .rating_group span.selected-rating:hover {
+    color: #ffb400;
+  }
+  
+
 @media only screen and (max-width:576px){
     .tour__title {
         font-size: 1rem;
