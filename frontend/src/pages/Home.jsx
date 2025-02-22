@@ -16,9 +16,11 @@ import FeaturedTourList from '../components/Featured-tours/FeaturedTourList';
 import MasonryImagesGallery from '../components/Image-gallery/MasonryImagesGallery';
 import Testimonials from '../components/Testimonial/Testimonials';
 import Newsletter from '../shared/Newsletter';
+import { useTrekRecommendation } from '../context/TrekRecommendationContext';
 
 
 const Home = () => {
+    const { setRecommendations } = useTrekRecommendation();
     
     return (<>
         {/* =========================hero section start =================*/}
@@ -55,7 +57,8 @@ const Home = () => {
                         </div>
 
                     </Col>
-                    <SearchBar />
+                    
+                    <SearchBar setRecommendations={setRecommendations} />
                 </Row>
             </Container>
         </section>

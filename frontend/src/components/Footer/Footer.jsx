@@ -6,61 +6,69 @@ import logo from "../../assets/images/logo.png";
 
 const quick__links = [
   {
-    path: '/home',
-    display: 'Home'
+    path: "/home",
+    display: "Home",
   },
   {
-    path: '/about',
-    display: 'About'
+    path: "/about",
+    display: "About",
   },
   {
-    path: '/tours',
-    display: 'Tours'
+    path: "/tours",
+    display: "Tours",
   },
-]
+];
 
 const quick__links2 = [
   {
-    path: '/gallery',
-    display: 'Gallery'
+    path: "/gallery",
+    display: "Gallery",
   },
   {
-    path: '/login',
-    display: 'Login'
+    path: "/login",
+    display: "Login",
   },
   {
-    path: '/register',
-    display: 'Register'
+    path: "/register",
+    display: "Register",
   },
-
-]
+];
 const Footer = () => {
-  const year = new Date().getFullYear()
+  const year = new Date().getFullYear();
   return (
     <footer className="footer">
       <Container>
         <Row>
           <Col lg="3">
-
             <div className="logo">
               <img src={logo} alt="" />
 
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit Commodi, enim.</p>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit Commodi,
+                enim.
+              </p>
               <div className="social_links d-flex align-items-center gap-4">
                 <span>
-                  <Link to='#'><i className="ri-youtube-line"></i></Link>
+                  <Link to="#">
+                    <i className="ri-youtube-line"></i>
+                  </Link>
                 </span>
                 <span>
-                  <Link to='#'><i className="ri-github-fill"></i></Link>
+                  <Link to="#">
+                    <i className="ri-github-fill"></i>
+                  </Link>
                 </span>
                 <span>
-                  <Link to='#'><i className="ri-facebook-circle-line"></i></Link>
+                  <Link to="#">
+                    <i className="ri-facebook-circle-line"></i>
+                  </Link>
                 </span>
                 <span>
-                  <Link to='#'><i className="ri-instagram-line"></i></Link>
+                  <Link to="#">
+                    <i className="ri-instagram-line"></i>
+                  </Link>
                 </span>
               </div>
-
             </div>
           </Col>
 
@@ -71,8 +79,7 @@ const Footer = () => {
                 <ListGroupItem key={index} className="ps-0 border-0">
                   <Link to={item.path}>{item.display}</Link>
                 </ListGroupItem>
-              )
-              )}
+              ))}
             </ListGroup>
           </Col>
           <Col lg="3">
@@ -82,8 +89,7 @@ const Footer = () => {
                 <ListGroupItem key={index} className="ps-0 border-0">
                   <Link to={item.path}>{item.display}</Link>
                 </ListGroupItem>
-              )
-              )}
+              ))}
             </ListGroup>
           </Col>
           <Col lg="3">
@@ -105,7 +111,7 @@ const Footer = () => {
                   </span>
                   Email:
                 </h6>
-                <p className="mb-0">ayush.211510@ncit.edu.np</p>
+                <p className="mb-0">admin@path2peaks.com</p>
               </ListGroupItem>
               <ListGroupItem className="ps-0 border-0 d-flex align-items-center gap-3">
                 <h6 className="mb-0 d-flex align-items-center gap-2">
@@ -114,20 +120,17 @@ const Footer = () => {
                   </span>
                   Phone:
                 </h6>
-                <p className="mb-0">9711223330</p>
+                <p className="mb-0">+977-9711223330</p>
               </ListGroupItem>
             </ListGroup>
           </Col>
 
           <Col lg="12" className="text-center pt-5">
-            <p className="copyright">
-              Copyright {year} . All rights
-              reserved.
-            </p>
+            <p className="copyright">Copyright {year} . All rights reserved.</p>
           </Col>
         </Row>
-      </Container >
-    </footer >
+      </Container>
+    </footer>
   );
 };
 export default Footer;

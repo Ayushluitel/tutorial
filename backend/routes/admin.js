@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyAdmin } from "../utils/verifyToken.js"; // Use your existing function
+import { verifyAdmin } from "../utils/verifyToken.js";
 import {
   getAllUsers,
   deleteUser,

@@ -1,27 +1,31 @@
 .recommend_bar {
-    padding: 0.5rem 1rem;
+    padding: 1.2rem 1rem;
     border-radius: 50px;
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     width: max-content;
-
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .form__group span {
-    font-style: 1.8rem;
+    font-size: 1.8rem;
     color: #ee6e6e;
-
 }
 
-.form__group input {
+.form__group input,
+.form__group select {
     border: none;
-    font-style: 0.9rem;
+    font-size: 0.9rem;
     color: var(--heading-color);
     font-weight: 500;
+    padding: 0.3rem;
+    border-radius: 5px;
 }
 
-.form__group input:focus {
+.form__group input:focus,
+.form__group select:focus {
     outline: none;
-
 }
 
 .form__group h6 {
@@ -30,65 +34,48 @@
 
 .form__group-fast {
     border-right: 2px solid #ddd;
-
-}
-
-.recommend__icon i {
-    font-size: 1.6rem;
-    padding: 0.5rem;
-    background: var(--secondary-color);
-    color: #fff;
-    border-radius: 10px 5px 10px 5px;
-    cursor: pointer;
-}
-
-/* Recommendation Bar */
-.recommend_bar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.recommend_form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
+    padding-right: 10px;
 }
 
 .recommend__button {
     background: var(--primary-color);
     color: #fff;
-    padding: 0.7rem 1.5rem;
+    padding: 0.5rem 1rem; 
     border: none;
     border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
     transition: 0.3s;
+    font-size: 0.9rem; 
+    line-height: 1rem; 
+    text-align: center;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    margin-left: 10px;
 }
 
 .recommend__button:hover {
     background: var(--secondary-color);
 }
-
-@media only screen and (max-width:992px){
-    .search__bar{
+@media only screen and (max-width: 992px) {
+    .recommend_bar {
         width: 100%;
         margin-top: 50px;
         border-radius: 2rem;
     }
 
-    .search__bar form{
+    .recommend_bar form {
         flex-wrap: wrap;
     }
 
-    .search__bar form .form__group {
+    .recommend_bar form .form__group {
         width: 48%;
     }
 }
 
-@media only screen and (max-width:576px){
-    .search__bar form .form__group{
+@media only screen and (max-width: 576px) {
+    .recommend_bar form .form__group {
         width: 100%;
     }
 
@@ -96,7 +83,7 @@
         font-size: 0.7rem;
     }
 
-    .form__group span i{
+    .form__group span i {
         font-size: 1.1rem;
     }
 
