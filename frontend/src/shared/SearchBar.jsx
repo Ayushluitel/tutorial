@@ -1,5 +1,4 @@
-//SEARCHbAR.JSX
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./search-bar.css";
 import { Col, Form, FormGroup } from "reactstrap";
 import { BASE_URL } from "./../utils/config.js";
@@ -7,16 +6,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const SearchBar = ({ setRecommendations }) => {
-  // Debug log to check if setRecommendations is being passed correctly
-  console.log("setRecommendations in SearchBar:", setRecommendations);
 
   const [budget, setBudget] = useState(500);
   const [time, setTime] = useState(5);
   const [difficulty, setDifficulty] = useState("moderate");
   const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
-
+ const navigate = useNavigate();
 
   const handleRecommend = async () => {
     try {
@@ -26,20 +21,24 @@ const SearchBar = ({ setRecommendations }) => {
         time,
         difficulty,
       });
-
-      // Ensure setRecommendations is a function before calling it
+  
+      console.log("Recommendations Data:", response.data); // Debugging
+  
       if (typeof setRecommendations === "function") {
         setRecommendations(response.data);
       } else {
         console.error("setRecommendations is not a function");
       }
-
+  
       setIsLoading(false);
+      navigate("/tours");
+      
     } catch (error) {
       console.error("Error fetching recommendations:", error);
       setIsLoading(false);
     }
   };
+  
 
   return (
     <Col lg="12">

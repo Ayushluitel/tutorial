@@ -40,7 +40,7 @@ const Booking = ({ tour, avgRating }) => {
     // Include totalAmount as price in the booking data
     const updatedBooking = {
       ...booking,
-      price: totalAmount, // ✅ Assign totalAmount to price
+      price: totalAmount, // Assign totalAmount to price
     };
 
     try {

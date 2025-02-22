@@ -12,7 +12,6 @@ const ResetPassword = () => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [token] = useState(new URLSearchParams(location.search).get('token'));
-    console.log("kkkkkkk", token);
 
     const handlePasswordChange = (e) => {
         e.target.id === 'newPassword' ? setNewPassword(e.target.value) : setConfirmPassword(e.target.value);
@@ -31,9 +30,7 @@ const ResetPassword = () => {
         try {
             const res = await fetch(`${BASE_URL}/auth/reset-password`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token, newPassword }),
             });
 
@@ -41,8 +38,8 @@ const ResetPassword = () => {
             if (!res.ok) {
                 setError(result.message);
             } else {
-                setMessage(result.message); // Success message
-                setTimeout(() => navigate('/login'), 3000); // Redirect after success
+                setMessage(result.message);
+                setTimeout(() => navigate('/login'), 3000);
             }
         } catch (err) {
             setError('An error occurred. Please try again.');
@@ -50,13 +47,13 @@ const ResetPassword = () => {
     };
 
     return (
-        <section>
+        <section className="reset-password">
             <Container>
-                <Row>
-                    <Col lg="8" className="m-auto">
+                <Row className="justify-content-center">
+                    <Col lg="6" md="8" sm="10">
                         <div className="reset-password__container">
-                            <h2>Reset Password</h2>
-                            <Form onSubmit={handleSubmit}>
+                            <h2 className="reset-password__title">Reset Password</h2>
+                            <Form onSubmit={handleSubmit} className="reset-password__form">
                                 <FormGroup>
                                     <input
                                         type="password"
@@ -65,6 +62,7 @@ const ResetPassword = () => {
                                         id="newPassword"
                                         value={newPassword}
                                         onChange={handlePasswordChange}
+                                        className="reset-password__input"
                                     />
                                 </FormGroup>
                                 <FormGroup>
@@ -75,9 +73,10 @@ const ResetPassword = () => {
                                         id="confirmPassword"
                                         value={confirmPassword}
                                         onChange={handlePasswordChange}
+                                        className="reset-password__input"
                                     />
                                 </FormGroup>
-                                <Button className="btn secondary__btn auth__btn" type="submit">
+                                <Button className="btn reset-password__btn" type="submit">
                                     Reset Password
                                 </Button>
                             </Form>

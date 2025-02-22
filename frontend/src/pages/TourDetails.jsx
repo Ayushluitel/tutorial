@@ -131,9 +131,9 @@ const TourDetails = () => {
                       </span>
                     </div>
                     <div className="tour__extra-details">
-                      <span>
+                      {/* <span>
                         <i className="ri-map-pin-2-line"></i> {city}
-                      </span>
+                      </span> */}
                       <span>
                         <i className="ri-money-dollar-circle-line"></i> ${price}
                         {""}/ per person

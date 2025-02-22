@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, FormGroup, Button } from 'reactstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BASE_URL } from '../utils/config';
 import '../styles/forgot-password.css';
 
@@ -8,7 +8,6 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setEmail(e.target.value);
@@ -22,9 +21,7 @@ const ForgotPassword = () => {
         try {
             const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),
             });
 
@@ -32,7 +29,7 @@ const ForgotPassword = () => {
             if (!res.ok) {
                 setError(result.message);
             } else {
-                setMessage(result.message); // Success message
+                setMessage(result.message);
             }
         } catch (err) {
             setError('An error occurred. Please try again.');
@@ -40,13 +37,13 @@ const ForgotPassword = () => {
     };
 
     return (
-        <section>
+        <section className="forgot-password">
             <Container>
-                <Row>
-                    <Col lg="8" className="m-auto">
+                <Row className="justify-content-center">
+                    <Col lg="6" md="8" sm="10">
                         <div className="forgot-password__container">
-                            <h2>Forgot Password</h2>
-                            <Form onSubmit={handleSubmit}>
+                            <h2 className="forgot-password__title">Forgot Password</h2>
+                            <Form onSubmit={handleSubmit} className="forgot-password__form">
                                 <FormGroup>
                                     <input
                                         type="email"
@@ -54,15 +51,16 @@ const ForgotPassword = () => {
                                         required
                                         value={email}
                                         onChange={handleChange}
+                                        className="forgot-password__input"
                                     />
                                 </FormGroup>
-                                <Button className="btn secondary__btn auth__btn" type="submit">
+                                <Button className="btn forgot-password__btn" type="submit">
                                     Send Reset Link
                                 </Button>
                             </Form>
                             {message && <p className="success-text">{message}</p>}
                             {error && <p className="error-text">{error}</p>}
-                            <p>
+                            <p className="forgot-password__login-link">
                                 Remembered your password? <Link to="/login">Login</Link>
                             </p>
                         </div>

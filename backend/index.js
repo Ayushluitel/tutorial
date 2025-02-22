@@ -13,6 +13,7 @@ import bookingRoute from "./routes/bookings.js";
 import adminRoute from "./routes/admin.js";
 import newsletterRoutes from "./routes/newsletterRoutes.js";
 import { createAdminUser } from "./controllers/authController.js";
+import recommendationsRoute from "./routes/recommendations.js";
 
 dotenv.config();
 const app = express();
@@ -54,6 +55,8 @@ app.use("/api/v1/review", reviewRoute);
 app.use("/api/v1/booking", bookingRoute);
 app.use("/api/v1/admin", adminRoute);
 app.use("/api/v1/newsletter", newsletterRoutes);
+app.use("/api/v1/recommendations", recommendationsRoute);
+
 
 // Create Admin User if it doesn't exist
 createAdminUser();
