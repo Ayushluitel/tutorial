@@ -19,18 +19,17 @@ const TourDetails = () => {
   const [tourRating, setTourRating] = useState(null);
   const { user } = useContext(AuthContext);
 
-  // Fetch data from database
+  // Fetch data from the backend
   const { data: tour, loading, error } = useFetch(`${BASE_URL}/tours/${id}`);
 
   // Destructure properties from the tour object
   const {
-    photo = "",
+    photo = [],
     title = "",
     desc = "",
     price = 0,
     reviews = [],
     address = "",
-    city = "",
     altitude = 0,
     time = 0,
     difficulty = "",
@@ -45,49 +44,48 @@ const TourDetails = () => {
   // Handle review submission
   const submitHandler = async (e) => {
     e.preventDefault();
-    const reviewText = reviewMsgRef.current?.value;
 
-    if (!reviewText) {
-      toast.error("Please enter your review");
+    if (!user) {
+      toast.error("Please log in to submit a review.");
       return;
     }
 
+    const reviewText = reviewMsgRef.current?.value;
+    if (!tourRating || !reviewText.trim()) {
+      toast.error("Please provide a rating and review.");
+      return;
+    }
+
+    const reviewData = {
+      username: user.username,
+      rating: tourRating,
+      reviewText,
+    };
+
     try {
-      if (!user) {
-        toast.warning("Please sign in");
-        return;
-      }
-
-      const reviewObj = {
-        username: user?.username,
-        reviewText,
-        rating: tourRating,
-      };
-
       const res = await fetch(`${BASE_URL}/review/${id}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(reviewObj),
+        body: JSON.stringify(reviewData),
       });
 
       const result = await res.json();
       if (!res.ok) {
-        return toast.error(result.message);
+        toast.error(result.message);
+        return;
       }
 
-      toast.success(result.message);
+      toast.success("Review submitted successfully!");
 
-      // Clear the input field and reset the rating
+      // Clear inputs
       reviewMsgRef.current.value = "";
       setTourRating(null);
 
-      // Re-fetch the tour details to get the updated reviews
+      // Reload reviews
       window.location.reload();
     } catch (err) {
-      toast.error(err.message);
+      toast.error("Failed to submit review. Try again.");
     }
   };
 
@@ -131,12 +129,9 @@ const TourDetails = () => {
                       </span>
                     </div>
                     <div className="tour__extra-details">
-                      {/* <span>
-                        <i className="ri-map-pin-2-line"></i> {city}
-                      </span> */}
                       <span>
-                        <i className="ri-money-dollar-circle-line"></i> ${price}
-                        {""}/ per person
+                        <i className="ri-money-dollar-circle-line"></i> ${price}{" "}
+                        / per person
                       </span>
                       <span>
                         <i className="ri-map-pin-time-line"></i> {altitude} m
@@ -145,7 +140,7 @@ const TourDetails = () => {
                         <i className="ri-map-pin-time-line"></i> {time} days
                       </span>
                       <span>
-                        <i class="ri-dashboard-2-line"></i> {difficulty}
+                        <i className="ri-dashboard-2-line"></i> {difficulty}
                       </span>
                       <span>
                         <i className="ri-group-line"></i> {maxGroupSize} people
@@ -154,8 +149,9 @@ const TourDetails = () => {
                     <h5>Description</h5>
                     <p>{desc}</p>
                   </div>
+
                   <Col lg="4">
-                    <WeatherDashboard city={city} />
+                  <WeatherDashboard address={tour.address} />
                   </Col>
 
                   {/* Tour Reviews Section */}
@@ -199,7 +195,6 @@ const TourDetails = () => {
                       {reviews?.map((review, index) => (
                         <div className="review__item" key={index}>
                           <img src={avatar} alt="" />
-
                           <div className="w-100">
                             <div className="d-flex align-items-center justify-content-between">
                               <div>
