@@ -1,37 +1,37 @@
 import express from "express";
-import Tour from "../models/Tour.js"; // Import the Tour model
+import Tour from "../models/Tour.js";
 
 const router = express.Router();
 
-// AI-based trek recommendation system
 router.post("/", async (req, res) => {
   try {
     const { budget, time, difficulty } = req.body;
 
-    // Normalize inputs
-    const minPrice = await Tour.find().sort({ price: 1 }).limit(1);
-    const maxPrice = await Tour.find().sort({ price: -1 }).limit(1);
-    const minTime = await Tour.find().sort({ time: 1 }).limit(1);
-    const maxTime = await Tour.find().sort({ time: -1 }).limit(1);
-
-    const normalizedBudget = (budget - minPrice[0].price) / (maxPrice[0].price - minPrice[0].price);
-    const normalizedTime = (time - minTime[0].time) / (maxTime[0].time - minTime[0].time);
-
-    // Convert difficulty to numeric values for better calculations
+    // Define difficulty mapping
     const difficultyMap = { easy: 1, moderate: 2, difficult: 3, demanding: 4 };
-    const normalizedDifficulty = difficultyMap[difficulty] / 4; // Scale between 0-1
+    const userDifficulty = difficultyMap[difficulty];
 
     // Fetch all treks
     const treks = await Tour.find();
 
     // Compute similarity scores
     const recommendedTreks = treks.map((trek) => {
-      const trekDifficulty = difficultyMap[trek.difficulty] / 4; // Normalize difficulty
+      const trekDifficulty = difficultyMap[trek.difficulty];
 
-      const score =
-        (1 - Math.abs(trek.price - normalizedBudget)) * 0.4 +
-        (1 - Math.abs(trek.time - normalizedTime)) * 0.3 +
-        (1 - Math.abs(trekDifficulty - normalizedDifficulty)) * 0.3;
+      // Budget Score: Prefer treks **within budget**, penalize if above
+      const budgetDiff = trek.price - budget;
+      const budgetScore = budgetDiff <= 0 ? 1 : 1 - (budgetDiff / budget); // If within budget, full score
+
+      // Time Score: Prefer treks **within time**, penalize if longer
+      const timeDiff = trek.time - time;
+      const timeScore = timeDiff <= 0 ? 1 : 1 - (timeDiff / time); // If within time, full score
+
+      // Difficulty Score: Favor exact matches, penalize bigger differences
+      const difficultyDiff = Math.abs(trekDifficulty - userDifficulty);
+      const difficultyScore = 1 - difficultyDiff / 3; // Scale between 0-1
+
+      // Weighted Score Calculation
+      const score = budgetScore * 0.4 + timeScore * 0.3 + difficultyScore * 0.3;
 
       return { ...trek._doc, score };
     });
