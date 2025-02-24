@@ -93,9 +93,8 @@ const TourDetails = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const imageUrl = `${
-    process.env.REACT_APP_BACKEND_URL || "http://localhost:4000"
-  }${photo[0]}`;
+  const imageUrl = `${process.env.REACT_APP_BACKEND_URL || "http://localhost:4000"
+    }${photo[0]}`;
 
   return (
     <>
@@ -130,7 +129,7 @@ const TourDetails = () => {
                     </div>
                     <div className="tour__extra-details">
                       <span>
-                        <i className="ri-money-dollar-circle-line"></i> ${price}{" "}
+                        Rs. {price}{" "}
                         / per person
                       </span>
                       <span>
@@ -151,7 +150,7 @@ const TourDetails = () => {
                   </div>
 
                   <Col lg="4">
-                  <WeatherDashboard address={tour.address} />
+                    <WeatherDashboard address={tour.address} />
                   </Col>
 
                   {/* Tour Reviews Section */}

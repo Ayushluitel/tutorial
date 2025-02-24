@@ -44,8 +44,7 @@ const Footer = () => {
               <img src={logo} alt="" />
 
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit Commodi,
-                enim.
+                Smart Trekking Solutions for a Better Adventure
               </p>
               <div className="social_links d-flex align-items-center gap-4">
                 <span>

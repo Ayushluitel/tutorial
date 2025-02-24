@@ -34,7 +34,7 @@ const Tours = () => {
 
   return (
     <>
-      <CommonSection title={"All Tours"} />
+      <CommonSection title={"All Treks"} />
 
       <section>
         <Container>
