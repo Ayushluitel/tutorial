@@ -21,7 +21,7 @@ import { useTrekRecommendation } from '../context/TrekRecommendationContext';
 
 const Home = () => {
     const { setRecommendations } = useTrekRecommendation();
-    
+
     return (<>
         {/* =========================hero section start =================*/}
         <section>
@@ -35,7 +35,7 @@ const Home = () => {
                             </div>
                             <h1>Traveling opens the door to creating <span className="highlight">memories</span></h1>
                             <p>
-                            A paradise for trekkers searching for landscape diversity and clam, Nepal is one of the most popular destinations for traveller that offer breath-taking and enthralling trekking routes. The panoramic Himalayan ranges of Nepal swear incredible and exciting trips. The rugged beauty of these lofty mountains encourages travellers, trekkers, mountaineers or tourists from all over the world and gives an unforgettable experience by taking them to some unexplored trails of mountain environment.
+                                A paradise for trekkers searching for landscape diversity and clam, Nepal is one of the most popular destinations for traveller that offer breath-taking and enthralling trekking routes. The panoramic Himalayan ranges of Nepal swear incredible and exciting trips. The rugged beauty of these lofty mountains encourages travellers, trekkers, mountaineers or tourists from all over the world and gives an unforgettable experience by taking them to some unexplored trails of mountain environment.
                             </p>
                         </div>
                     </Col>
@@ -57,7 +57,7 @@ const Home = () => {
                         </div>
 
                     </Col>
-                    
+
                     <SearchBar setRecommendations={setRecommendations} />
                 </Row>
             </Container>
@@ -82,7 +82,7 @@ const Home = () => {
                 <Row>
                     <Col lg='12' className='mb-5'>
                         <Subtitle subtitle={"Explore"} />
-                        <h2 className="featured__tour-tile">Our Featured Tours</h2>
+                        <h2 className="featured__tour-tile">Our Featured Treks</h2>
                     </Col>
                     <FeaturedTourList />
                 </Row>

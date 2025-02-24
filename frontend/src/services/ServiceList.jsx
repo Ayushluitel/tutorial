@@ -15,7 +15,7 @@ const servicesData = [
     {
         imgUrl: guideImg,
         title: "Trek Recommendation",
-        desc: "Find your perfect trail with our AI-powered trek recommendation system. Based on your fitness level, trek preferences, and current weather conditions, Path2Peaks suggests routes tailored to your needs. From easy hikes to challenging expeditions, our dynamic system ensures every trek suits your goals and provides updated alternatives if conditions change."
+        desc: "Find your perfect trail with our Content-Based Trek recommendation system. Based on your fitness level, trek preferences, and current weather conditions, Path2Peaks suggests routes tailored to your needs. From easy hikes to challenging expeditions, our dynamic system ensures every trek suits your goals and provides updated alternatives if conditions change."
     },
     {
         imgUrl: customizationImg,

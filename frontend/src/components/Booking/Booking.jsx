@@ -125,17 +125,17 @@ const Booking = ({ tour, avgRating }) => {
         <ListGroup>
           <ListGroupItem className="border-0 px-0">
             <h5 className="d-flex align-items-center gap-1">
-              ${price} <i className="ri-close-line"></i> 1 person
+              Rs.{price} <i className="ri-close-line"></i> 1 person
             </h5>
-            <span> ${price}</span>
+            <span> Rs.{price}</span>
           </ListGroupItem>
           <ListGroupItem className="border-0 px-0">
             <h5>Service charge</h5>
-            <span> ${serviceFee}</span>
+            <span> Rs{serviceFee}</span>
           </ListGroupItem>
           <ListGroupItem className="border-0 px-0 total">
             <h5>Total</h5>
-            <span> ${totalAmount}</span>
+            <span> rs{totalAmount}</span>
           </ListGroupItem>
         </ListGroup>
         <Button className="btn primary__btn w-100 mt-4" onClick={handleClick}>
